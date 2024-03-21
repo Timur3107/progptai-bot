@@ -1,0 +1,4 @@
+aiogram==2.25.2
+python-dotenv
+openai==0.28
+g4f==0.1.9.1
