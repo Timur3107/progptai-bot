@@ -38,7 +38,7 @@ def delete_contex():
     count_tokens_yandexgpt = 0
 
 
-async def chatgpt3_message_handler(msg, loading_message):
+async def chatgpt3_message_handler(msg):
     update(context_chatgpt3, 'user', msg.text)
     response = openai.ChatCompletion.create(
         model="gpt-3.5-turbo",
@@ -55,11 +55,10 @@ async def chatgpt3_message_handler(msg, loading_message):
         await msg.answer(
             f'Сейчас вы использовали максимум токенов: ваш диалог сброшен. Продолжайте работу')
         delete_contex()
-    await loading_message.delete()
     await msg.answer(answer_chatgpt)
 
 
-async def chatgpt4_message_handler(msg, loading_message):
+async def chatgpt4_message_handler(msg):
     global count_tokens_gpt4
     update(context_chatgpt4, 'user', msg.text)
     count_tokens_gpt4 += len(msg.text)
@@ -77,11 +76,10 @@ async def chatgpt4_message_handler(msg, loading_message):
         await msg.answer(
             f'Сейчас вы использовали максимум токенов: ваш диалог сброшен. Продолжайте работу')
         delete_contex()
-    await loading_message.delete()
     await msg.answer(response)
 
 
-async def yandexgpt_message_handler(msg, loading_message):
+async def yandexgpt_message_handler(msg):
     global count_tokens_yandexgpt
     update(context_yandexgpt, 'user', msg.text, yandex=True)
     count_tokens_yandexgpt += len(msg.text)
@@ -111,7 +109,6 @@ async def yandexgpt_message_handler(msg, loading_message):
         await msg.answer(
             f'Сейчас вы использовали максимум токенов: ваш диалог сброшен. Продолжайте работу')
         delete_contex()
-    await loading_message.delete()
 
     await msg.answer(yandex_gpt_answer)
 
@@ -127,11 +124,11 @@ async def text_handler(msg: types.Message):
     try:
         loading_message = await msg.answer("Loading...")
         if config['State']['MODEL_GPT'] == "gpt3":
-            await chatgpt3_message_handler(msg, loading_message)
+            await chatgpt3_message_handler(msg)
         elif config['State']['MODEL_GPT'] == "gpt4":
-            await chatgpt4_message_handler(msg, loading_message)
+            await chatgpt4_message_handler(msg)
         else:
-            await yandexgpt_message_handler(msg, loading_message)
+            await yandexgpt_message_handler(msg)
     except Exception as _ex:
         await msg.answer(
             text=f"Error: {_ex}"

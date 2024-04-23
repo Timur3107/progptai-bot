@@ -7,6 +7,7 @@ from aiogram import Bot, Dispatcher
 from handlers.user_handlers import register_user_handlers
 
 
+# подключение всех хандлеров
 def register_handlers(dp: Dispatcher):
     register_user_handlers(dp)
 
