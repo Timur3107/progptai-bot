@@ -3,8 +3,12 @@ import os
 from dotenv import load_dotenv
 import logging
 import g4f
+
+load_dotenv('.env')
 from aiogram import Bot, Dispatcher
 from handlers.user_handlers import register_user_handlers
+
+from database.engine import create_db
 
 
 # подключение всех хандлеров
@@ -13,7 +17,7 @@ def register_handlers(dp: Dispatcher):
 
 
 async def main():
-    load_dotenv('.env')
+    await create_db()
     logging.basicConfig(level=logging.INFO)
     token = os.getenv('BOT_TOKEN')
     bot = Bot(token)

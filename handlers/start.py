@@ -1,8 +1,10 @@
 from aiogram import types
 from aiogram.types import ParseMode
+from database.requests import add_user
 
 
 async def cmd_start(msg: types.Message):
+    await add_user(msg.chat.id)
     await msg.reply(
         "Привет! Я - бот proAI, объединение популярных нейросетей в одном месте.\n\n"
         "Мои команды:\n"
